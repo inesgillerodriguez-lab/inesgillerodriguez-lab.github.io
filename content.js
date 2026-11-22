@@ -606,20 +606,20 @@ window.CONTENT = {
   "atlas": [
     [
       {
-        "image": "atlascopro-axos.gif",
-        "project": "atlascoproprietes",
-        "col": 481,
-        "width": 464,
-        "offset": 0,
-        "caption": "",
-        "align": "gauche"
-      },
-      {
         "image": "capture-decran-2026-11-11-a-16-33-48.png",
         "project": "setentaanosenunacasa",
         "col": 500,
         "width": 500,
         "offset": 60,
+        "caption": "",
+        "align": "gauche"
+      },
+      {
+        "image": "atlascopro-axos.gif",
+        "project": "atlascoproprietes",
+        "col": 481,
+        "width": 464,
+        "offset": 0,
         "caption": "",
         "align": "gauche"
       }
