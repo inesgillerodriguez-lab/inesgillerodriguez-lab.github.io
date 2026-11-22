@@ -130,8 +130,13 @@
     max-width: calc(var(--zone) + 2 * var(--side)); margin: 0 auto;
     padding: var(--block) var(--side) 0;
   }
+  /* galerie « libre » : tailles et alignements variés, ordre conservé */
+  .project .gallery.libre { display: flex; flex-wrap: wrap; align-items: flex-start; row-gap: calc(var(--fgap, 64) * var(--u)); column-gap: 0; }
+  .project .gallery.libre.rangs { row-gap: var(--row); }
+  .project .gallery.libre .free { flex: none; width: calc(var(--w) * 1%); margin: calc(var(--mt) * 1%) calc(var(--mr) * 1%) 0 calc(var(--ml) * 1%); }
+  .project .gallery.libre img, .project .gallery.libre video { display: block; width: 100%; height: auto; }
   .project .gallery video { grid-column: 1 / -1; width: 100%; display: block; background: #000; }
-  .project .gallery img:last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - 24 / 1080 * 100%); justify-self: center; }
+  .project .gallery > img:last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - 24 / 1080 * 100%); justify-self: center; }
   /* texte : même largeur que la page info ; fiche à droite */
   .project .cols {
     display: grid; grid-template-columns: minmax(0, var(--textw)) minmax(0, var(--fichew));
@@ -185,7 +190,8 @@
     .tile { width: 100%; margin-top: 0; }
     .tile .pic { width: 100%; }
     .project .gallery { grid-template-columns: 1fr; }
-    .project .gallery img:last-child:nth-child(odd) { width: 100%; }
+    .project .gallery > img:last-child:nth-child(odd) { width: 100%; }
+    .project .gallery.libre .free { width: 100%; margin: 0; }
     .project .cols { grid-template-columns: 1fr; }
     .index, .index tbody, .index tr, .index td { display: block; width: auto !important; }
     .index tr { padding: 12px 0; }
@@ -373,6 +379,43 @@ C.links.forEach(l => {
 });
 
 /* page projet */
+// tirage pseudo-aléatoire reproductible : même graine = même mise en page
+function freeLayout(n, seed, size, perRow) {
+  let x = (seed * 9301 + 49297) % 233280 || 1;
+  const r = (a, b) => { x = (x * 9301 + 49297) % 233280; return a + (x / 233280) * (b - a); };
+  const out = []; let i = 0;
+  while (i < n) {
+    if (perRow > 1) {                              // rangées de N images de même taille, gouttière de l'atlas (48/1080)
+      const k = perRow, gap = 48 / 1080 * 100, w = size || (100 - gap * (k - 1)) / k;
+      const row = [];
+      for (let j = 0; j < k && i < n; j++, i++) row.push({ w, ml: j ? gap : 0, mt: 0, mr: 0 });   // tops alignés : grille calme
+      row[row.length - 1].mr = Math.max(0, 100 - row.length * w - (row.length - 1) * gap);
+      out.push(...row);
+      continue;
+    }
+    if (size) {                                    // taille imposée : toutes pareilles, seule la place change
+      const w = Math.min(100, size), pair = w <= 47 && i + 1 < n && r(0, 1) < 0.5;
+      if (pair) {
+        const free = 100 - 2 * w - 3, ml1 = r(0, free), ml2 = 3 + r(0, free - ml1);
+        out.push({ w, ml: ml1, mt: 0, mr: 0 }, { w, ml: ml2, mt: r(0, 8), mr: 100 - 2 * w - ml1 - ml2 }); i += 2;
+      } else { const ml = r(0, 100 - w); out.push({ w, ml, mt: 0, mr: 100 - w - ml }); i += 1; }
+      continue;
+    }
+    if (i + 1 < n && r(0, 1) < 0.55) {            // deux images côte à côte
+      const w1 = r(28, 46), w2 = r(28, 46), free = 100 - w1 - w2 - 5;
+      const ml1 = r(0, free), ml2 = 5 + r(0, free - ml1);
+      const high = r(0, 1) < 0.5;
+      out.push({ w: w1, ml: ml1, mt: high ? 0 : r(4, 14), mr: 0 }, { w: w2, ml: ml2, mt: high ? r(4, 14) : 0, mr: 100 - w1 - ml1 - w2 - ml2 });
+      i += 2;
+    } else {                                       // une image seule, plus ou moins grande, à gauche, au centre ou à droite
+      const w = r(34, 62);
+      const ml = r(0, 100 - w);
+      out.push({ w, ml, mt: 0, mr: 100 - w - ml }); i += 1;
+    }
+  }
+  // la marge de droite complète chaque rangée à 100 %, pour que les rangées ne se mélangent pas
+  return out.map(L => ({ w: L.w.toFixed(2), ml: L.ml.toFixed(2), mt: L.mt.toFixed(2), mr: Math.max(0, L.mr - 0.3).toFixed(2) }));
+}
 function renderProject(id) {
   const p = PROJECTS[id], el = document.getElementById("project");
   el.innerHTML = "";
@@ -395,7 +438,17 @@ function renderProject(id) {
 
   if (p.images.length) {
     const g = txt("div", "", "gallery");
-    p.images.forEach(f => g.append(img(f, p.title)));
+    if (p.layout === "libre") {
+      // mise en page libre : tailles et décalages tirés au hasard (mais toujours les mêmes pour une « graine »), ordre conservé
+      g.classList.add("libre");
+      if (p.freeGap !== undefined && p.freeGap !== "") g.style.setProperty("--fgap", p.freeGap);
+      else if (+p.freePerRow > 1) g.classList.add("rangs");   // par rangées : même espace entre rangées que l'atlas
+      freeLayout(p.images.length, p.seed || 1, +p.freeSize || 0, +p.freePerRow || 0).forEach((L, i) => {
+        const fig = txt("div", "", "free");
+        fig.style.cssText = `--w:${L.w};--ml:${L.ml};--mt:${L.mt};--mr:${L.mr}`;
+        fig.append(img(p.images[i], p.title)); g.append(fig);
+      });
+    } else p.images.forEach(f => g.append(img(f, p.title)));
     el.append(g);
   }
 

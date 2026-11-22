@@ -237,7 +237,18 @@ window.CONTENT = {
         "url": ""
       },
       "images": [
-        "image05.jpg"
+        "image05.jpg",
+        "ines-g-archi-07-min.jpg",
+        "ines-g-archi-03-min.jpg",
+        "ines-g-archi-12-min.jpg",
+        "ines-g-archi-01-min.jpg",
+        "ines-g-archi-04-min.jpg",
+        "ines-g-archi-05-min.jpg",
+        "ines-g-archi-06-min.jpg",
+        "ines-g-archi-08-min.jpg",
+        "ines-g-archi-09-min.jpg",
+        "ines-g-archi-10-min.jpg",
+        "ines-g-archi-11-min.jpg"
       ],
       "subtitle": [
         {
@@ -248,7 +259,13 @@ window.CONTENT = {
           "text": "Collectif Item",
           "url": "https://www.collectifitem.com"
         }
-      ]
+      ],
+      "heart": {},
+      "layout": "libre",
+      "seed": 7,
+      "freeSize": "",
+      "freeGap": "",
+      "freePerRow": 3
     },
     {
       "id": "revitaliserlesilotsducentreville",
