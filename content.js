@@ -1,4 +1,3 @@
-/* Contenu du site — généré par le back office (admin). */
 window.CONTENT = {
   "projects": [
     {
@@ -625,145 +624,158 @@ window.CONTENT = {
       {
         "image": "atlascopro-axos.gif",
         "project": "atlascoproprietes",
-        "col": 481,
-        "width": 464,
+        "col": 364,
+        "width": 364,
         "offset": 0,
         "caption": "",
-        "align": "gauche"
+        "align": "centre"
       },
       {
         "image": "capture-decran-2026-11-11-a-16-33-48.png",
         "project": "setentaanosenunacasa",
-        "col": 500,
-        "width": 500,
-        "offset": 60,
+        "col": 548,
+        "width": 548,
+        "offset": 0,
         "caption": "",
-        "align": "gauche"
+        "align": "centre"
       }
     ],
     [
       {
         "image": "image02.jpg",
         "project": "unaciudaddentrodelaciudad",
-        "col": 328,
-        "width": 328,
-        "offset": 14,
-        "caption": ""
+        "col": 299,
+        "width": 299,
+        "offset": 0,
+        "caption": "",
+        "align": "centre"
       },
       {
         "image": "image05.jpg",
         "project": "championnes",
-        "col": 328,
-        "width": 328,
+        "col": 282,
+        "width": 282,
         "offset": 0,
-        "caption": ""
+        "caption": "",
+        "align": "centre"
       },
       {
         "image": "enluttes-1.jpg",
         "project": "enluttes",
-        "col": 328,
-        "width": 303,
-        "offset": 14,
-        "caption": ""
+        "col": 283,
+        "width": 283,
+        "offset": 0,
+        "caption": "",
+        "align": "centre"
       }
     ],
     [
       {
         "image": "image22.jpg",
         "project": "awof",
-        "col": 450,
-        "width": 430,
+        "col": 302,
+        "width": 302,
         "offset": 0,
-        "caption": ""
+        "caption": "",
+        "align": "centre"
       },
       {
         "image": "image15.jpg",
         "project": "lelogementcommedispositifpolitique",
-        "col": 582,
-        "width": 570,
-        "offset": 100,
-        "caption": ""
+        "col": 610,
+        "width": 610,
+        "offset": 0,
+        "caption": "",
+        "align": "centre"
       }
     ],
     [
       {
         "image": "image23.jpg",
         "project": "chroniquedunelutte",
-        "col": 462,
-        "width": 462,
-        "offset": 16,
-        "caption": ""
+        "col": 426,
+        "width": 426,
+        "offset": 0,
+        "caption": "",
+        "align": "centre"
       },
       {
         "image": "image35.jpg",
         "project": "maisonducretderoch",
-        "col": 328,
-        "width": 328,
+        "col": 306,
+        "width": 306,
         "offset": 0,
         "caption": "",
-        "align": "gauche"
+        "align": "centre"
       }
     ],
     [
       {
-        "image": "image07.jpg",
-        "project": "awof",
-        "col": 328,
-        "width": 328,
-        "offset": 0,
-        "caption": ""
-      },
-      {
         "image": "image33.jpg",
         "project": "chaiviticole",
-        "col": 328,
-        "width": 328,
-        "offset": 92,
-        "caption": ""
+        "col": 483,
+        "width": 483,
+        "offset": 0,
+        "caption": "",
+        "align": "centre"
+      },
+      {
+        "image": "image07.jpg",
+        "project": "awof",
+        "col": 429,
+        "width": 429,
+        "offset": 0,
+        "caption": "",
+        "align": "centre"
       }
     ],
     [
       {
         "image": "image51.jpg",
         "project": "pellicule",
-        "col": 516,
-        "width": 516,
-        "offset": 1,
-        "caption": ""
+        "col": 458,
+        "width": 458,
+        "offset": 0,
+        "caption": "",
+        "align": "centre"
       },
       {
         "image": "image58.jpg",
         "project": "sublimis",
-        "col": 516,
-        "width": 516,
+        "col": 454,
+        "width": 454,
         "offset": 0,
-        "caption": "Biennale Internationale du design de Saint-Étienne"
+        "caption": "Biennale Internationale du design de Saint-Étienne",
+        "align": "centre"
       }
     ],
     [
       {
         "image": "image18.jpg",
         "project": "pellicule",
-        "col": 328,
-        "width": 328,
-        "offset": 46,
-        "caption": ""
+        "col": 258,
+        "width": 258,
+        "offset": 0,
+        "caption": "",
+        "align": "centre"
       },
       {
         "image": "image12.jpg",
         "project": "habiterletalweg",
-        "col": 328,
-        "width": 328,
-        "offset": 128,
-        "caption": ""
+        "col": 388,
+        "width": 388,
+        "offset": 0,
+        "caption": "",
+        "align": "centre"
       },
       {
         "image": "image32.jpg",
         "project": "sublimis",
-        "col": 328,
-        "width": 328,
+        "col": 218,
+        "width": 218,
         "offset": 0,
-        "caption": "Biennale Internationale du design de Saint-Étienne"
+        "caption": "Biennale Internationale du design de Saint-Étienne",
+        "align": "centre"
       }
     ]
   ],
