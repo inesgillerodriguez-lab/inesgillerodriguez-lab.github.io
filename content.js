@@ -606,20 +606,20 @@ window.CONTENT = {
   "atlas": [
     [
       {
-        "image": "capture-decran-2026-11-11-a-16-33-48.png",
-        "project": "setentaanosenunacasa",
-        "col": 500,
-        "width": 500,
-        "offset": 60,
-        "caption": "",
-        "align": "gauche"
-      },
-      {
         "image": "atlascopro-axos.gif",
         "project": "atlascoproprietes",
         "col": 481,
         "width": 464,
         "offset": 0,
+        "caption": "",
+        "align": "gauche"
+      },
+      {
+        "image": "capture-decran-2026-11-11-a-16-33-48.png",
+        "project": "setentaanosenunacasa",
+        "col": 500,
+        "width": 500,
+        "offset": 60,
         "caption": "",
         "align": "gauche"
       }
@@ -759,8 +759,7 @@ window.CONTENT = {
   ],
   "info": {
     "intro": [
-      "Étudiante en master 2 à l’École Nationale Supérieure d’Architecture de Saint-Étienne.\nJe m’intéresse aux enjeux politiques de l’architecture et au rôle de l’architecte au-delà du bâti, notamment à travers le média Architecture in a World on Fire. J’explore les traces et imaginaires que le territoire et la société révèlent à travers différents médium.",
-      "J’ai réalisé un stage chez AHA pour comprendre comment façonner autrement la perception du territoire, puis chez SOL Architecture, qui défend un urbanisme du soin et de la réhabilitation. J’y ai travaillé sur les copropriétés en difficulté, un sujet que je développe aujourd’hui dans mon mémoire."
+      "Étudiante en master 2 à l'École Nationale Supérieure d'Architecture de Saint-Étienne et membre du média Architecture in a World on Fire.\nJe m'intéresse aux enjeux politiques de l'architecture et au rôle de l'architecte. J'explore les traces et imaginaires que le territoire et la société révèlent à travers différents médiums."
     ],
     "sections": [
       {
