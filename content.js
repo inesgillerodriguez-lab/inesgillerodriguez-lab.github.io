@@ -1,4 +1,3 @@
-/* Contenu du site — généré par le back office (admin). */
 window.CONTENT = {
   "projects": [
     {
@@ -642,7 +641,7 @@ window.CONTENT = {
         "caption": ""
       },
       {
-        "image": "image19.jpg",
+        "image": "enluttes-1.jpg",
         "project": "enluttes",
         "col": 328,
         "width": 303,
