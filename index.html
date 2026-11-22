@@ -138,8 +138,26 @@
   /* vidéo intégrée (Instagram, YouTube, Vimeo) */
   .project .embed { max-width: calc(var(--zone) + 2 * var(--side)); margin: 0 auto; padding: var(--block) var(--side) 0; }
   .project .embed iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; background: #f3f3f3; }
-  .project .embed.vertical iframe { width: min(100%, calc(400 * var(--u))); aspect-ratio: auto; height: calc(720 * var(--u)); margin: 0 auto; }
+  /* reel Instagram : on ne garde que la vidéo (bandeau, « J'aime » et commentaires hors cadre), alignée à gauche */
+  .project .embed.vertical .crop { position: relative; width: 278px; height: 494px; overflow: hidden; background: #000; }
+  .project .embed.vertical iframe { position: absolute; left: -61px; top: -55px; width: 400px; height: 720px; aspect-ratio: auto; max-width: none; }
   .project .embed + .gallery { padding-top: var(--row); }
+  /* vidéo + carrousel côte à côte */
+  .project .duo { display: flex; justify-content: center; align-items: flex-start; gap: calc(48 * var(--u)); max-width: calc(var(--zone) + 2 * var(--side)); margin: 0 auto; padding: var(--block) var(--side) 0; }
+  .project .duo .embed { padding: 0; margin: 0; flex: none; }
+  .project .carousel .nav .switch { margin-left: auto; color: var(--ink); text-decoration: none; }
+  .project .carousel .nav .switch:hover { color: var(--hover); }
+  .project .carousel [hidden] { display: none !important; }
+  /* à côté du carrousel : la vidéo prend exactement le même cadre que les photos (329 × 494), recadrée en haut et en bas */
+  .project .duo .embed.vertical .crop { width: 329px; height: 494px; }
+  .project .duo .embed.vertical .crop .inner { position: absolute; left: 0; top: -45.5px; width: 278px; height: 494px; overflow: hidden; transform: scale(1.1835); transform-origin: 0 0; }
+  .project .carousel { --ch: min(calc(680 * var(--u)), 78vh); flex: none; width: calc(var(--ch) * var(--ratio, .6667)); min-width: 0; }   /* une seule image visible à la fois */
+  .project .carousel .track { display: flex; gap: 0; height: var(--ch); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .project .carousel .track::-webkit-scrollbar { display: none; }
+  .project .carousel .track img { flex: none; width: 100%; height: 100%; object-fit: contain; scroll-snap-align: start; }
+  .project .carousel .nav { display: flex; align-items: center; gap: calc(16 * var(--u)); margin-top: calc(12 * var(--u)); color: var(--muted); }
+  .project .carousel button { background: none; border: 0; padding: 0; font: inherit; color: var(--ink); cursor: var(--cursor, pointer); }
+  .project .carousel button:hover { color: var(--hover); }
   .project .gallery video { grid-column: 1 / -1; width: 100%; display: block; background: #000; }
   .project .gallery > img:last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - 24 / 1080 * 100%); justify-self: center; }
   /* texte : même largeur que la page info ; fiche à droite */
@@ -197,6 +215,9 @@
     .project .gallery { grid-template-columns: 1fr; }
     .project .gallery > img:last-child:nth-child(odd) { width: 100%; }
     .project .gallery.libre .free { width: 100%; margin: 0; }
+    .project .duo { flex-direction: column; align-items: center; gap: 24px; }
+    .project .carousel { width: 100%; }
+    .project .carousel .track { height: auto; aspect-ratio: var(--ratio, .6667); }
     .project .cols { grid-template-columns: 1fr; }
     .index, .index tbody, .index tr, .index td { display: block; width: auto !important; }
     .index tr { padding: 12px 0; }
@@ -454,14 +475,46 @@ function renderProject(id) {
 
   // vidéo en ligne (reel Instagram, YouTube, Vimeo) : affichée avant les images
   const emb = embedUrl(p.embed);
-  if (emb) {
-    const box = txt("div", "", "embed" + (emb.vertical ? " vertical" : ""));
+  let embBox = null;
+  if (emb && p.layout !== "carrousel") {
+    embBox = txt("div", "", "embed" + (emb.vertical ? " vertical" : ""));
     const f = document.createElement("iframe");
     f.src = emb.src; f.loading = "lazy"; f.title = p.title; f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
     f.setAttribute("allowfullscreen", ""); f.setAttribute("scrolling", "no");
-    box.append(f); el.append(box);
+    if (emb.vertical) {
+      const crop = txt("div", "", "crop");
+      if (p.layout === "carrousel") { const inner = txt("div", "", "inner"); inner.append(f); crop.append(inner); } else crop.append(f);
+      embBox.append(crop);
+    } else embBox.append(f);
   }
-  if (p.images.length) {
+  // carrousel : la vidéo d'un côté, toutes les photos de l'autre, à faire défiler
+  if (p.layout === "carrousel" && p.images.length) {
+    // carrousel de photos ; s.il y a une vidéo, un lien « voir le reel » mène à Instagram
+    const duo = txt("div", "", "duo");
+    const car = txt("div", "", "carousel"), track = txt("div", "", "track");
+    p.images.forEach(f => track.append(img(f, p.title)));
+    // le cadre prend les proportions de la première image
+    const first = track.querySelector("img");
+    if (first) { const set = () => first.naturalWidth && car.style.setProperty("--ratio", first.naturalWidth / first.naturalHeight); first.complete ? set() : first.addEventListener("load", set); first.loading = "eager"; }
+    const prev = txt("button", "←", "prev"), next = txt("button", "→", "next"), count = txt("span", "", "count");
+    prev.setAttribute("aria-label", "image précédente"); next.setAttribute("aria-label", "image suivante");
+    // une image = toute la largeur du cadre : la position se déduit simplement
+    const n = p.images.length; let k = 0, busy = 0;
+    const upd = () => { count.textContent = (k + 1) + " / " + n; };
+    const go = d => { k = (k + d + n) % n; busy = Date.now(); track.scrollTo({ left: k * track.clientWidth, behavior: "smooth" }); upd(); };   // en boucle
+    prev.addEventListener("click", () => go(-1)); next.addEventListener("click", () => go(1));
+    track.addEventListener("scroll", () => { if (Date.now() - busy < 700) return; k = Math.round(track.scrollLeft / track.clientWidth); upd(); });
+    upd();
+    const nav = txt("div", "", "nav"); nav.append(prev, count, next);
+    car.append(track);
+    if (emb && /^https?:\/\//i.test(p.embed)) {   // lien vers la vidéo sur Instagram / YouTube / Vimeo
+      const a = txt("a", emb.vertical ? "voir le reel" : "voir la vidéo", "switch");
+      a.href = p.embed; a.target = "_blank"; a.rel = "noopener";
+      nav.append(a);
+    }
+    car.append(nav); duo.append(car); el.append(duo);
+  } else if (embBox) el.append(embBox);
+  if (p.images.length && p.layout !== "carrousel") {
     const g = txt("div", "", "gallery");
     if (p.layout === "libre") {
       // mise en page libre : tailles et décalages tirés au hasard (mais toujours les mêmes pour une « graine »), ordre conservé

@@ -261,11 +261,12 @@ window.CONTENT = {
         }
       ],
       "heart": {},
-      "layout": "libre",
+      "layout": "carrousel",
       "seed": 7,
       "freeSize": "",
       "freeGap": "",
-      "freePerRow": 3
+      "freePerRow": 3,
+      "embed": "https://www.instagram.com/reel/C_sRs6Xily6/"
     },
     {
       "id": "revitaliserlesilotsducentreville",
