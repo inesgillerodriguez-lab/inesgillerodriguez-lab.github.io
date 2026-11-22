@@ -759,7 +759,7 @@ window.CONTENT = {
   ],
   "info": {
     "intro": [
-      "Étudiante en master 2 à l'École Nationale Supérieure d'Architecture de Saint-Étienne et membre du média Architecture in a World on Fire.\nJe m'intéresse aux enjeux politiques de l'architecture et au rôle de l'architecte. J'explore les traces et imaginaires que le territoire et la société révèlent à travers différents médiums."
+      "Étudiante en master 2 à l'École Nationale Supérieure d'Architecture de Saint-Étienne et membre du média Architecture in a World on Fire."
     ],
     "sections": [
       {
