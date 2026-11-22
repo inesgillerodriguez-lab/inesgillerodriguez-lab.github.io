@@ -1,3 +1,4 @@
+/* Contenu du site — généré par le back office (admin). */
 window.CONTENT = {
   "projects": [
     {
@@ -694,23 +695,16 @@ window.CONTENT = {
         "caption": ""
       },
       {
-        "image": "image43.jpg",
-        "project": "awof",
-        "col": 570,
-        "width": 471,
-        "offset": 0,
-        "caption": ""
-      }
-    ],
-    [
-      {
         "image": "image07.jpg",
         "project": "awof",
         "col": 328,
         "width": 328,
-        "offset": 78,
-        "caption": ""
-      },
+        "offset": 0,
+        "caption": "",
+        "align": "gauche"
+      }
+    ],
+    [
       {
         "image": "image35.jpg",
         "project": "maisonducretderoch",

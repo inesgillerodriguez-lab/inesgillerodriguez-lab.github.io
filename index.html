@@ -135,6 +135,11 @@
   .project .gallery.libre.rangs { row-gap: var(--row); }
   .project .gallery.libre .free { flex: none; width: calc(var(--w) * 1%); margin: calc(var(--mt) * 1%) calc(var(--mr) * 1%) 0 calc(var(--ml) * 1%); }
   .project .gallery.libre img, .project .gallery.libre video { display: block; width: 100%; height: auto; }
+  /* vidéo intégrée (Instagram, YouTube, Vimeo) */
+  .project .embed { max-width: calc(var(--zone) + 2 * var(--side)); margin: 0 auto; padding: var(--block) var(--side) 0; }
+  .project .embed iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; background: #f3f3f3; }
+  .project .embed.vertical iframe { width: min(100%, calc(400 * var(--u))); aspect-ratio: auto; height: calc(720 * var(--u)); margin: 0 auto; }
+  .project .embed + .gallery { padding-top: var(--row); }
   .project .gallery video { grid-column: 1 / -1; width: 100%; display: block; background: #000; }
   .project .gallery > img:last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - 24 / 1080 * 100%); justify-self: center; }
   /* texte : même largeur que la page info ; fiche à droite */
@@ -379,6 +384,17 @@ C.links.forEach(l => {
 });
 
 /* page projet */
+// lien de vidéo → adresse à intégrer (sans script externe)
+function embedUrl(u) {
+  if (!u) return null;
+  let m = u.match(/instagram\.com\/(?:[^/]+\/)?(reel|reels|p|tv)\/([\w-]+)/i);
+  if (m) return { src: `https://www.instagram.com/${m[1] === "p" ? "p" : "reel"}/${m[2]}/embed/`, vertical: true };
+  m = u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([\w-]{6,})/i);
+  if (m) return { src: `https://www.youtube-nocookie.com/embed/${m[1]}`, vertical: /shorts\//.test(u) };
+  m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+  if (m) return { src: `https://player.vimeo.com/video/${m[1]}?dnt=1` };
+  return null;
+}
 // tirage pseudo-aléatoire reproductible : même graine = même mise en page
 function freeLayout(n, seed, size, perRow) {
   let x = (seed * 9301 + 49297) % 233280 || 1;
@@ -436,6 +452,15 @@ function renderProject(id) {
   });
   if (subLines.length) el.append(sub);
 
+  // vidéo en ligne (reel Instagram, YouTube, Vimeo) : affichée avant les images
+  const emb = embedUrl(p.embed);
+  if (emb) {
+    const box = txt("div", "", "embed" + (emb.vertical ? " vertical" : ""));
+    const f = document.createElement("iframe");
+    f.src = emb.src; f.loading = "lazy"; f.title = p.title; f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    f.setAttribute("allowfullscreen", ""); f.setAttribute("scrolling", "no");
+    box.append(f); el.append(box);
+  }
   if (p.images.length) {
     const g = txt("div", "", "gallery");
     if (p.layout === "libre") {
