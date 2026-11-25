@@ -1,3 +1,4 @@
+/* Contenu du site — généré par le back office (admin). */
 window.CONTENT = {
   "projects": [
     {
